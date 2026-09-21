@@ -1,0 +1,32 @@
+# Environment variables (never commit real secrets)
+.env
+backend/.env
+*.env
+!.env.example
+!backend/.env.example
+
+# Streamlit secrets (never commit real secrets)
+.streamlit/secrets.toml
+streamlit_app/.streamlit/secrets.toml
+!streamlit_app/.streamlit/secrets.toml.example
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+env/
+*.egg-info/
+
+# Node (if any tooling is added later)
+node_modules/
+npm-debug.log
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log

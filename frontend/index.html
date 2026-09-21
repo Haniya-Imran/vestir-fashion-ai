@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vestir — Your AI Fashion Stylist</title>
+<meta name="description" content="Vestir is your personal AI fashion stylist. Chat about outfits, color matching, occasions and trends, and get styling advice made for you." />
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<script>
+  // When the chatbot is deployed on Streamlit Community Cloud, set its URL
+  // here — the floating chat panel will embed it. Leave blank for local
+  // development against the FastAPI backend (see backend/).
+  window.VESTIR_STREAMLIT_URL = "";
+</script>
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar">
+  <div class="container">
+    <a href="#" class="brand" aria-label="Vestir home">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+        <circle cx="20" cy="20" r="20" fill="url(#navGrad)"/>
+        <path d="M20 9c-1.4 0-2.5 1.1-2.5 2.5 0 .6.2 1.1.5 1.5l-6 4.6c-1.1.8-1.7 2.1-1.5 3.4L11.6 29a1.5 1.5 0 0 0 1.5 1.3h13.8a1.5 1.5 0 0 0 1.5-1.3l1.1-7.9c.2-1.3-.4-2.6-1.5-3.4l-6-4.6c.3-.4.5-.9.5-1.5C22.5 10.1 21.4 9 20 9z" stroke="#FAF5F0" stroke-width="1.3" stroke-linejoin="round"/>
+        <path d="M25.5 15.5l2 2-2 2M14.5 15.5l-2 2 2 2" stroke="#FAF5F0" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+        <path d="M25 12.5l.7 1.6 1.6.7-1.6.7-.7 1.6-.7-1.6-1.6-.7 1.6-.7.7-1.6z" fill="#FAF5F0"/>
+        <defs>
+          <linearGradient id="navGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C68A93"/>
+            <stop offset="1" stop-color="#7A3F4A"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span class="brand-name">Vestir</span>
+    </a>
+
+    <nav aria-label="Primary">
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#assistant">Assistant</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-cta">
+      <a href="#assistant" class="btn btn-secondary">Explore Features</a>
+      <button class="btn btn-primary" id="navTryStylist" type="button">Try AI Stylist</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home">Home</a>
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#assistant">Assistant</a>
+    <button class="btn btn-primary" id="mobileTryStylist" type="button">Try AI Stylist</button>
+  </div>
+</header>
+
+<main>
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-copy">
+        <span class="hero-eyebrow">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6L12 2z"/></svg>
+          AI styling, made personal
+        </span>
+        <h1>Your closet just got a <em>stylist.</em></h1>
+        <p class="hero-sub">Chat with Vestir about anything fashion — outfit ideas, color matching, dressing for an occasion, or building a look from what's already in your wardrobe. Personal styling, on demand.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" id="heroTryStylist" type="button">Try AI Stylist</button>
+          <a href="#features" class="btn btn-secondary">Explore Features</a>
+        </div>
+        <div class="hero-proof">
+          <div class="hero-proof-avatars" aria-hidden="true">
+            <span style="background:#D9AEB3"></span>
+            <span style="background:#C68A93"></span>
+            <span style="background:#A85D6B"></span>
+          </div>
+          <p><strong>Styled thousands of looks</strong> — from casual to wedding-ready.</p>
+        </div>
+      </div>
+
+      <div class="hero-visual" role="img" aria-label="Editorial illustration of a dress form with subtle AI accents, representing fashion styling guided by artificial intelligence">
+        <svg viewBox="0 0 480 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="dressGrad" x1="0" y1="0" x2="0" y2="600" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#A85D6B"/>
+              <stop offset="1" stop-color="#2B2420"/>
+            </linearGradient>
+          </defs>
+          <!-- mannequin neck/shoulders -->
+          <circle cx="240" cy="150" r="34" fill="none" stroke="#7A3F4A" stroke-width="2.2" opacity=".8"/>
+          <path d="M170 210c0-38 31-58 70-58s70 20 70 58v40H170v-40z" fill="none" stroke="#7A3F4A" stroke-width="2.2" opacity=".8"/>
+          <!-- flowing garment -->
+          <path d="M150 250c-14 90-30 180-14 280 6 40 40 62 104 62s98-22 104-62c16-100 0-190-14-280" fill="url(#dressGrad)" opacity=".14"/>
+          <path d="M150 250c-14 90-30 180-14 280 6 40 40 62 104 62s98-22 104-62c16-100 0-190-14-280" fill="none" stroke="#7A3F4A" stroke-width="2.2"/>
+          <path d="M188 250c-6 70-10 150 4 220M292 250c6 70 10 150-4 220" stroke="#A85D6B" stroke-width="1.4" opacity=".55"/>
+          <!-- fabric folds -->
+          <path d="M210 300c8 60 8 140 0 220M240 300c4 60 4 140 0 220M270 300c-8 60-8 140 0 220" stroke="#A85D6B" stroke-width="1" opacity=".35"/>
+          <!-- AI node accents -->
+          <g opacity=".9">
+            <circle cx="356" cy="190" r="3.4" fill="#C68A93"/>
+            <circle cx="392" cy="230" r="2.4" fill="#C68A93"/>
+            <circle cx="368" cy="260" r="2" fill="#A85D6B"/>
+            <path d="M356 190L392 230M356 190L368 260M392 230L368 260" stroke="#C68A93" stroke-width="1" opacity=".5"/>
+          </g>
+          <g opacity=".9">
+            <circle cx="108" cy="360" r="3" fill="#C68A93"/>
+            <circle cx="80" cy="400" r="2" fill="#A85D6B"/>
+            <path d="M108 360L80 400" stroke="#C68A93" stroke-width="1" opacity=".5"/>
+          </g>
+          <!-- sparkle -->
+          <path d="M368 130l3.6 9.4 9.4 3.6-9.4 3.6-3.6 9.4-3.6-9.4-9.4-3.6 9.4-3.6 3.6-9.4z" fill="#C68A93"/>
+        </svg>
+        <div class="hero-chip chip-1"><span class="dot"></span> Occasion: Wedding guest</div>
+        <div class="hero-chip chip-2"><span class="dot"></span> Palette matched ✓</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AI SHOWCASE ============ -->
+  <section class="section section-dark showcase" id="assistant">
+    <div class="container">
+      <div class="showcase-copy">
+        <span class="section-tag">See Vestir in action</span>
+        <h2>A stylist that actually replies.</h2>
+        <p style="color:rgba(255,255,255,0.62); margin-top:16px; font-size:1.05rem; max-width:44ch;">Describe what you're working with — a piece, an event, a mood — and Vestir styles it in real time, right from the floating chat.</p>
+        <div class="check-list">
+          <div class="check-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            <p><strong>Understands your wardrobe</strong> Tell it what you own and it builds looks around it.</p>
+          </div>
+          <div class="check-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            <p><strong>Asks the right questions</strong> Occasion, season, colors — only when it matters.</p>
+          </div>
+          <div class="check-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            <p><strong>Stays in the fashion lane</strong> Focused entirely on styling, no generic chit-chat.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mock-panel" aria-hidden="true">
+        <div class="mock-header">
+          <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="20" fill="url(#mockGrad)"/>
+            <path d="M20 9c-1.4 0-2.5 1.1-2.5 2.5 0 .6.2 1.1.5 1.5l-6 4.6c-1.1.8-1.7 2.1-1.5 3.4L11.6 29a1.5 1.5 0 0 0 1.5 1.3h13.8a1.5 1.5 0 0 0 1.5-1.3l1.1-7.9c.2-1.3-.4-2.6-1.5-3.4l-6-4.6c.3-.4.5-.9.5-1.5C22.5 10.1 21.4 9 20 9z" stroke="#FAF5F0" stroke-width="1.3" stroke-linejoin="round"/>
+            <defs><linearGradient id="mockGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#C68A93"/><stop offset="1" stop-color="#7A3F4A"/></linearGradient></defs>
+          </svg>
+          <div class="who"><strong>Vestir</strong><span>AI Stylist · online</span></div>
+        </div>
+        <div class="mock-body">
+          <div class="mbubble user">I have a beige blazer. How can I style it?</div>
+          <div class="mbubble ai">Beige is so versatile — try it over a white tee with straight-leg denim and tan loafers for daytime. For evening, swap in black trousers and a slim gold necklace. What's the occasion?</div>
+          <div class="mbubble user">Dinner with friends, casual but put-together.</div>
+          <div class="mbubble ai">Then go beige blazer + cream knit top + dark denim + block-heel mules. Add a thin belt to define the waist. Want a few accessory options?</div>
+        </div>
+        <div class="mock-input">
+          <span>Ask your AI stylist...</span>
+          <div class="send-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">What Vestir does</span>
+        <h2>Styling help for every part of getting dressed.</h2>
+        <p>Six ways Vestir works with you, from a single piece to a full occasion look.</p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 3.5L19 8l-3 3.5.7 4.5L12 14l-4.7 2 .7-4.5L5 8l4.5-1.5L12 3z"/></svg></div>
+          <h3>AI Styling</h3>
+          <p>Personalized outfit suggestions built around your taste, body, and plans.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18M12 3a9 9 0 010 18"/></svg></div>
+          <h3>Color Matching</h3>
+          <p>Discover palettes and combinations that genuinely work together.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4.5L18.5 21 12 16.5 5.5 21l2-7.5L2 9h7z"/></svg></div>
+          <h3>Occasion Dressing</h3>
+          <p>From weddings to job interviews, get looks matched to the event.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V9a2 2 0 012-2h2V5a2 2 0 012-2h4a2 2 0 012 2v2h2a2 2 0 012 2v12"/><path d="M9 21v-6h6v6"/></svg></div>
+          <h3>Wardrobe Assistant</h3>
+          <p>Build fresh looks from pieces you already own instead of buying more.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg></div>
+          <h3>Accessory Styling</h3>
+          <p>Jewelry, bags, shoes and scarves chosen to complete the outfit.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+          <h3>Fashion Chat</h3>
+          <p>A natural, back-and-forth conversation with your AI stylist, anytime.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="section" id="how-it-works" style="background:var(--cream-deep);">
+    <div class="container">
+      <div class="section-head center">
+        <span class="section-tag">How it works</span>
+        <h2>Three steps to a finished look.</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">01</span>
+          <h3>Tell us</h3>
+          <p>Describe your style, an outfit piece, an occasion, or a fashion question — in your own words.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <h3>Get styled</h3>
+          <p>Vestir reads your request and responds with specific, wearable suggestions.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <h3>Refine your look</h3>
+          <p>Keep chatting to adjust colors, swap pieces, or try a different mood.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ USE CASES ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">Made for every moment</span>
+        <h2>Whatever you're dressing for.</h2>
+        <p>Tap a moment in the chat to get suggestions built specifically for it.</p>
+      </div>
+      <div class="usecase-grid">
+        <div class="usecase-card"><div class="glyph">☕</div><h4>Casual day out</h4><p>Comfortable, effortless, still put-together.</p></div>
+        <div class="usecase-card"><div class="glyph">💼</div><h4>Work &amp; formal</h4><p>Sharp looks for the office or a meeting.</p></div>
+        <div class="usecase-card"><div class="glyph">🥂</div><h4>Party &amp; evening</h4><p>Statement pieces for nights that matter.</p></div>
+        <div class="usecase-card"><div class="glyph">💍</div><h4>Wedding guest</h4><p>Elegant, dress-code-appropriate outfits.</p></div>
+        <div class="usecase-card"><div class="glyph">🍂</div><h4>Seasonal refresh</h4><p>Transition your wardrobe as weather changes.</p></div>
+        <div class="usecase-card"><div class="glyph">👗</div><h4>Wardrobe ideas</h4><p>New combinations from pieces you already own.</p></div>
+        <div class="usecase-card"><div class="glyph">🧣</div><h4>Hijab &amp; scarf styling</h4><p>Modest looks with thoughtful draping and color.</p></div>
+        <div class="usecase-card"><div class="glyph">✨</div><h4>Trend check</h4><p>What's current, and how to wear it your way.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY ============ -->
+  <section class="section why">
+    <div class="container">
+      <div class="why-copy">
+        <span class="section-tag">Why Vestir</span>
+        <h2>Styling advice that feels like your own taste, sharpened.</h2>
+        <div class="why-list">
+          <div class="why-item">
+            <span class="num">01</span>
+            <div><h4>Fashion-only focus</h4><p>Every answer stays on style — no generic assistant detours.</p></div>
+          </div>
+          <div class="why-item">
+            <span class="num">02</span>
+            <div><h4>Judgment-free</h4><p>Ask anything, from basics to bold experiments.</p></div>
+          </div>
+          <div class="why-item">
+            <span class="num">03</span>
+            <div><h4>Available anytime</h4><p>Open the chat from any page, whenever inspiration hits.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="why-card">
+        <figure style="margin:0;">
+          <span class="quote-mark">"</span>
+          <blockquote>Vestir doesn't just suggest an outfit — it asks what I actually need it for, then styles around that.</blockquote>
+          <figcaption>— Early user feedback</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="section" style="padding-top:0;">
+    <div class="final-cta">
+      <h2>Your next outfit is one chat away.</h2>
+      <p>Open Vestir and tell it what you're dressing for — the rest is a conversation.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="ctaTryStylist" type="button">Try AI Stylist</button>
+        <a href="#features" class="btn btn-ghost-dark">Explore Features</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="20" fill="url(#footGrad)"/>
+            <path d="M20 9c-1.4 0-2.5 1.1-2.5 2.5 0 .6.2 1.1.5 1.5l-6 4.6c-1.1.8-1.7 2.1-1.5 3.4L11.6 29a1.5 1.5 0 0 0 1.5 1.3h13.8a1.5 1.5 0 0 0 1.5-1.3l1.1-7.9c.2-1.3-.4-2.6-1.5-3.4l-6-4.6c.3-.4.5-.9.5-1.5C22.5 10.1 21.4 9 20 9z" stroke="#FAF5F0" stroke-width="1.3" stroke-linejoin="round"/>
+            <defs><linearGradient id="footGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#C68A93"/><stop offset="1" stop-color="#7A3F4A"/></linearGradient></defs>
+          </svg>
+          <span class="brand-name">Vestir</span>
+        </a>
+        <p>Your personal AI fashion stylist — outfit ideas, color matching, and styling advice for every occasion.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Assistant</h5>
+        <ul>
+          <li><a href="#assistant">See it in action</a></li>
+          <li><a href="#" id="footerTryStylist">Try AI Stylist</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Vestir. All rights reserved.</span>
+      <div class="footer-socials" aria-hidden="true">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9 17c1-3 1.5-6 2-9M12 12c0-2 2-3 3.5-2s1.5 4-.5 5-3-1-3-3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ FLOATING CHAT WIDGET ============ -->
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="Vestir AI Fashion Stylist chat" aria-hidden="true">
+  <div class="chat-head">
+    <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="20" cy="20" r="20" fill="url(#chatGrad)"/>
+      <path d="M20 9c-1.4 0-2.5 1.1-2.5 2.5 0 .6.2 1.1.5 1.5l-6 4.6c-1.1.8-1.7 2.1-1.5 3.4L11.6 29a1.5 1.5 0 0 0 1.5 1.3h13.8a1.5 1.5 0 0 0 1.5-1.3l1.1-7.9c.2-1.3-.4-2.6-1.5-3.4l-6-4.6c.3-.4.5-.9.5-1.5C22.5 10.1 21.4 9 20 9z" stroke="#FAF5F0" stroke-width="1.3" stroke-linejoin="round"/>
+      <defs><linearGradient id="chatGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#C68A93"/><stop offset="1" stop-color="#7A3F4A"/></linearGradient></defs>
+    </svg>
+    <div class="who">
+      <strong>Vestir</strong>
+      <span class="status">AI Stylist</span>
+    </div>
+    <div class="chat-head-actions">
+      <button class="icon-btn" id="chatMenuToggle" aria-label="More options" aria-haspopup="true" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+      </button>
+      <button class="icon-btn" id="chatCloseBtn" aria-label="Close chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="chat-menu" id="chatMenu">
+      <button type="button" id="newChatBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        New chat
+      </button>
+    </div>
+  </div>
+
+  <div class="chat-body" id="chatBody" aria-live="polite">
+    <!-- welcome + quick actions injected by script.js -->
+  </div>
+
+  <div class="chat-foot">
+    <form class="chat-form" id="chatForm">
+      <label for="chatInput" class="visually-hidden">Ask your AI stylist</label>
+      <textarea id="chatInput" rows="1" placeholder="Ask your AI stylist..." aria-label="Message"></textarea>
+      <button type="submit" class="send-btn" id="sendBtn" aria-label="Send message">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </form>
+    <p class="chat-hint">Vestir focuses on fashion &amp; styling advice.</p>
+  </div>
+</div>
+
+<button class="chat-launcher" id="chatLauncher" aria-label="Open Vestir AI Stylist chat" aria-expanded="false" aria-controls="chatPanel">
+  <svg class="icon-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg>
+  <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+</button>
+<span class="chat-tooltip">Ask Fashion AI</span>
+
+<script src="script.js"></script>
+</body>
+</html>
